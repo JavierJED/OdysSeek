@@ -1,0 +1,329 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   OdysSeek v3.4 — Design System (Apple Super Ellipse & Cupertina HUD)
+   Estética pálida desaturada, radios de 20px y círculos de selección iOS Photos.
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Modo Oscuro Pálido (Deep Slate & Soft Pastel Accents) ─── */
+:root {
+  --bg:          #0C1017;
+  --surface:     #151D28;
+  --surface2:    #1E2938;
+  --border:      #2C394C;
+  --text:        #E2E8F0;
+  --muted:       #8393A8;
+  
+  --accent:      #5E8AB4;
+  --accent-h:    #76A0C8;
+  --accent-soft: rgba(94, 138, 180, 0.18);
+  
+  --ok:          #2DD4BF;
+  --warn:        #FBBF24;
+  --danger:      #F87171;
+  
+  --badge-cite-bg: #1A2B3E; --badge-cite-fg: #76A0C8;
+  --badge-note-bg: #153326; --badge-note-fg: #6EE7B7;
+  --badge-res-bg:  #261D3C; --badge-res-fg: #C4B5FD;
+
+  --radius:      16px;
+  --radius-lg:   20px;
+  --radius-sm:   10px;
+  --fs:          13px;
+  --font-ui:     "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  --ease:        cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm:   0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-md:   0 10px 30px rgba(0, 0, 0, 0.42);
+}
+
+/* ─── Modo Claro Pálido (Soft Canvas & Slate Blue Accents) ─── */
+body.theme-light {
+  --bg:          #F2F5FA;
+  --surface:     #FFFFFF;
+  --surface2:    #E8EEF6;
+  --border:      #D5E0EE;
+  --text:        #1E293B;
+  --muted:       #64748B;
+  
+  --accent:      #436B94;
+  --accent-h:    #345577;
+  --accent-soft: #E2ECF6;
+  
+  --ok:          #0D9488;
+  --warn:        #D97706;
+  --danger:      #E11D48;
+  
+  --badge-cite-bg: #E2ECF6; --badge-cite-fg: #345577;
+  --badge-note-bg: #D1FAE5; --badge-note-fg: #065F46;
+  --badge-res-bg:  #EDE9FE; --badge-res-fg: #5B21B6;
+
+  --shadow-sm:   0 2px 10px rgba(30, 41, 59, 0.05);
+  --shadow-md:   0 12px 28px rgba(30, 41, 59, 0.09);
+}
+
+/* ─── Reset & Layout ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-ui);
+  font-size: var(--fs);
+  width: 395px;
+  min-height: 480px;
+  max-height: 600px;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+@keyframes panelSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Header ─── */
+.app-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+.brand-logo { width: 24px; height: 24px; object-fit: contain; }
+.brand { font-size: 15.5px; font-weight: 700; color: var(--accent); flex: 1; letter-spacing: -0.4px; }
+
+.hdr-btn {
+  background: none; border: none; color: var(--muted);
+  font-size: 16px; cursor: pointer; padding: 6px 8px;
+  border-radius: var(--radius-sm); transition: all .15s var(--ease);
+}
+.hdr-btn:hover { color: var(--accent); background: var(--surface2); }
+
+/* ─── Navegación (Tabs) ─── */
+.tab-bar {
+  display: flex; gap: 4px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+}
+.tab {
+  flex: 1; padding: 6px 2px;
+  font-size: 10.5px; font-weight: 600;
+  border: none; background: transparent; color: var(--muted);
+  cursor: pointer; border-radius: var(--radius-sm);
+  transition: all .2s var(--ease);
+}
+.tab:hover:not(.active) { color: var(--text); background: rgba(150, 160, 180, 0.12); }
+.tab.active {
+  color: var(--accent); background: var(--surface);
+  font-weight: 700; box-shadow: var(--shadow-sm);
+}
+
+/* ─── Panels ─── */
+.panel {
+  display: none; flex-direction: column; gap: 10px;
+  padding: 14px 16px; overflow-y: auto;
+  max-height: calc(600px - 88px);
+}
+.panel.active { display: flex; animation: panelSlideIn 0.25s var(--ease); }
+
+/* ─── Tipografía & Etiquetas ─── */
+.section-label {
+  font-size: 10.5px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.6px;
+}
+.hint { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.status { font-size: 11.5px; min-height: 16px; text-align: center; font-weight: 500; }
+.status.ok { color: var(--ok); }
+.status.warn { color: var(--warn); }
+.status.error { color: var(--danger); }
+.mt8 { margin-top: 8px; } .mb4 { margin-bottom: 4px; } .row { display: flex; gap: 8px; align-items: stretch; } .flex1 { flex: 1; }
+
+/* ─── Controles (Inputs & Teclado) ─── */
+input[type="text"], input[type="url"], input[type="color"], textarea, select {
+  font-family: inherit; font-size: 12.5px;
+  color: var(--text); background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  outline: none; transition: all .2s var(--ease);
+  width: 100%; padding: 8px 12px;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3.5px var(--accent-soft);
+}
+textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+input[type="color"] { padding: 2px; width: 42px; height: 32px; cursor: pointer; }
+
+/* ─── Botones Super Ellipse (16px) ─── */
+.btn-primary, .btn-icon, .btn-export {
+  padding: 8px 14px; border: none; border-radius: 16px;
+  background: var(--accent); color: #FFF;
+  font-weight: 600; font-size: 12px; cursor: pointer;
+  transition: all .2s var(--ease); white-space: nowrap;
+}
+.btn-primary:hover, .btn-icon:hover, .btn-export:hover {
+  background: var(--accent-h); transform: translateY(-1px); box-shadow: var(--shadow-sm);
+}
+.btn-ghost, .btn-sm {
+  padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 16px;
+  background: transparent; color: var(--muted);
+  font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all .15s var(--ease);
+}
+.btn-ghost:hover, .btn-sm:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.btn-ghost-red, .btn-danger {
+  padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 16px;
+  background: transparent; color: var(--danger); font-size: 11.5px; font-weight: 600;
+  cursor: pointer; transition: all .15s var(--ease);
+}
+.btn-ghost-red:hover, .btn-danger:hover { background: var(--danger); color: #FFF; border-color: var(--danger); }
+
+/* ─── Toggles Estilo Apple / iOS Pálidos ─── */
+.toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; transition: all .2s var(--ease);
+}
+.toggle-row:hover { border-color: var(--accent); background: var(--surface2); }
+.toggle-label { font-size: 12px; font-weight: 600; color: var(--text); }
+.switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0; background-color: var(--border);
+  border-radius: 24px; transition: .25s var(--ease);
+}
+.slider:before {
+  content: ""; position: absolute; height: 18px; width: 18px;
+  left: 3px; bottom: 3px; background-color: #FFF;
+  border-radius: 50%; transition: .25s var(--ease); box-shadow: var(--shadow-sm);
+}
+input:checked + .slider { background-color: var(--ok); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* ─── Píldoras Académicas & Formatos (14px) ─── */
+.format-pills { display: flex; gap: 6px; background: var(--surface2); padding: 4px; border-radius: var(--radius); }
+.format-pill {
+  flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600;
+  border: none; background: transparent; color: var(--muted);
+  border-radius: 14px; cursor: pointer; transition: all .2s var(--ease); text-align: center;
+}
+.format-pill:hover:not(.active) { color: var(--text); }
+.format-pill.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); font-weight: 700; }
+
+/* ─── CÍRCULOS DE SELECCIÓN ESTILO APPLE PHOTOS (22px) ─── */
+.card-check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50% !important;
+  border: 1.8px solid var(--muted);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s var(--ease);
+  flex-shrink: 0;
+}
+.card-check:hover { border-color: var(--accent); transform: scale(1.08); }
+.card-check:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 2px 10px var(--accent-soft);
+}
+.card-check:checked::after {
+  content: "✓";
+  position: absolute;
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 800;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ─── Tarjetas Super Ellipse (20px) ─── */
+.card-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; padding: 2px; }
+.card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 15px 16px; display: flex; flex-direction: column; gap: 8px;
+  box-shadow: var(--shadow-sm); transition: all .2s var(--ease);
+  animation: cardFadeIn 0.25s var(--ease); position: relative;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-1.5px); box-shadow: var(--shadow-md); }
+.card.selected { border-color: var(--accent); background: var(--accent-soft); }
+
+.card-head { display: flex; align-items: center; gap: 10px; }
+.badge {
+  font-size: 9.5px; font-weight: 700; padding: 3px 8px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.badge-cite { background: var(--badge-cite-bg); color: var(--badge-cite-fg); }
+.badge-note { background: var(--badge-note-bg); color: var(--badge-note-fg); }
+.badge-resource { background: var(--badge-res-bg); color: var(--badge-res-fg); }
+.card-date { font-size: 10.5px; color: var(--muted); margin-left: auto; }
+
+.cite-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.card-text { font-size: 11.5px; line-height: 1.55; color: var(--text); max-height: 85px; overflow-y: auto; white-space: pre-wrap; }
+.card-text a.cite-link { color: var(--accent); text-decoration: none; }
+.card-text a.cite-link:hover { text-decoration: underline; }
+
+/* ─── Menú Contextual Tarjeta (⋯) ─── */
+.card-menu-wrap { position: relative; }
+.card-menu-btn { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0 4px; border-radius: 6px; }
+.card-menu-btn:hover { color: var(--accent); background: var(--surface2); }
+.card-menu {
+  position: absolute; top: 100%; right: 0; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-md);
+  min-width: 145px; overflow: hidden; z-index: 30; display: flex; flex-direction: column;
+}
+.card-menu.hidden { display: none; }
+.card-menu button {
+  background: none; border: none; text-align: left; padding: 8px 12px;
+  font-size: 11.5px; color: var(--text); cursor: pointer; transition: background .15s;
+}
+.card-menu button:hover { background: var(--surface2); color: var(--accent); }
+.card-menu button[data-act="trash"]:hover { background: rgba(248, 113, 113, 0.1); color: var(--danger); }
+
+/* ─── Barras de Selección por Grupos & Contador ─── */
+.selection-bar, .counter-bar {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  background: var(--accent-soft); border: 1.5px solid var(--accent);
+  border-radius: var(--radius); font-size: 11.5px; font-weight: 600; color: var(--accent);
+}
+.selection-bar.hidden, .counter-bar.hidden { display: none !important; }
+.nav-group { display: flex; gap: 4px; }
+
+/* ─── Resultados Semánticos Simbióticos (16px) ─── */
+.sem-list { display: flex; flex-direction: column; gap: 6px; }
+.sem-item {
+  padding: 10px 14px; background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 16px; font-size: 11.5px; line-height: 1.45; cursor: pointer;
+  transition: all .2s var(--ease); display: flex; justify-content: space-between; gap: 10px;
+}
+.sem-item:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateX(2px); }
+.sem-item .sc { font-size: 10px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+
+/* ─── Settings Overlay ─── */
+.overlay {
+  position: absolute; inset: 0; background: rgba(12, 16, 23, 0.75);
+  backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.overlay.hidden { display: none; }
+.settings-card {
+  background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  padding: 20px; width: 320px; display: flex; flex-direction: column; gap: 12px;
+  box-shadow: var(--shadow-md); animation: cardFadeIn 0.2s var(--ease);
+}
+.settings-hdr { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--accent); font-size: 14px; }
+.cfg-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+
+/* ─── Chips Dinámicos (Palabras Clave & Activos Satélite) ─── */
+.chip-list { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.chip {
+  padding: 5px 11px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 10.5px; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: all 0.18s var(--ease); display: inline-flex; align-items: center; gap: 4px;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }

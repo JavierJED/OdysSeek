@@ -1,0 +1,31 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Política de privacidad · OdysSeek</title><style>body{font:15px/1.65 system-ui,sans-serif;max-width:790px;margin:3rem auto;padding:0 1.4rem;color:#243247;background:#f8fafc}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}h1{color:#1f5376}</style></head><body><h1>Política de privacidad de OdysSeek</h1><pre>
+OdysSeek sirve para buscar y resaltar contenido en páginas web y documentos PDF, crear referencias bibliográficas, guardar notas y recursos, y exportar información para investigación académica.
+
+## Qué información procesa
+- Sitios visitados y documentos consultados: OdysSeek analiza, en el navegador, el contenido de páginas y archivos PDF que se muestran para ofrecer búsqueda, resaltado y extracción de metadatos. También utiliza títulos, direcciones web (URL), fragmentos de texto y contenido seleccionado para las funciones que solicita el usuario.
+- Registros guardados: las citas, notas, recursos, historial interno y preferencias se guardan mediante chrome.storage.local en el perfil local del navegador. No se sincronizan automáticamente con servidores de OdysSeek. El almacenamiento local del navegador no constituye un sistema de cifrado de extremo a extremo.
+- Archivos PDF: el visor puede descargar el PDF desde su servidor de origen, usando la sesión autenticada del navegador cuando sea necesario. Las solicitudes al servidor de origen pueden incluir las cookies que correspondan a ese sitio. El PDF se procesa en el navegador; la extensión no dispone de un servidor propio para recibirlo.
+- Claves API opcionales: si el usuario habilita la asistencia con inteligencia artificial y escribe una clave, esta se conserva localmente en el navegador, sin cifrado adicional proporcionado por OdysSeek. Solo debe usarse una clave limitada y revocable.
+
+## Uso opcional de inteligencia artificial y transmisión a terceros
+La asistencia mediante IA está desactivada de forma predeterminada. Cuando el usuario habilita la función e inicia explícitamente una acción de redacción, OdysSeek envía una solicitud HTTPS directamente al proveedor elegido:
+
+- Google Gemini: generativelanguage.googleapis.com.
+- DeepSeek: api.deepseek.com.
+
+La solicitud puede incluir título, autor, fecha, nombre del sitio y URL de una referencia, o el título, URL, borrador y contexto del recurso que el usuario elija procesar. Se envía la clave API correspondiente al proveedor elegido para autenticar la solicitud. No se remite automáticamente el contenido completo del PDF ni el historial entero. Los proveedores independientes procesan las solicitudes conforme a sus propias condiciones y políticas de privacidad.
+
+Si el usuario no activa ni utiliza la asistencia de IA, OdysSeek no envía estos datos a Google Gemini ni a DeepSeek mediante esa función.
+
+## Publicidad, venta y analítica
+Esta versión de OdysSeek no incorpora publicidad, telemetría propia ni mecanismos destinados a vender datos personales. No mantiene una cuenta de usuario ni un servidor de OdysSeek para almacenar citas o notas. El uso normal de Chrome y las solicitudes a los sitios visitados quedan sujetos a las prácticas de sus respectivos proveedores.
+
+## Conservación y eliminación
+Las anotaciones, citas, recursos y ajustes permanecen en el almacenamiento local hasta que el usuario los elimina desde la aplicación, restablece los datos de la extensión o la desinstala. Los PDF se almacenan temporalmente en memoria durante su carga; no se guardan permanentemente en chrome.storage.local.
+
+## Control del usuario
+El usuario puede mantener la IA desactivada, borrar sus registros y desinstalar la extensión. Si compartió información con Gemini o DeepSeek, deberá consultar con ese proveedor cualquier solicitud relacionada con su tratamiento de datos.
+
+## Contacto y actualizaciones
+Las consultas de privacidad pueden dirigirse al medio de soporte indicado por el desarrollador en la ficha pública de OdysSeek en Chrome Web Store. Esta política debe mantenerse accesible mediante una URL pública y actualizarse cuando cambien las funciones o los destinos de los datos.
+</pre></body></html>

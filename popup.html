@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>OdysSeek v3.4.3</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+
+<!-- HEADER -->
+<header class="app-header">
+  <img class="brand-logo" src="logos/icon48.png" alt="OdysSeek">
+  <span class="brand">OdysSeek</span>
+  <button class="hdr-btn" id="btnSettings" title="Configuración">⚙</button>
+</header>
+
+<!-- TAB BAR -->
+<nav class="tab-bar">
+  <button class="tab active" data-tab="search">Buscar</button>
+  <button class="tab" data-tab="cites">Citas</button>
+  <button class="tab" data-tab="notes">Notas</button>
+  <button class="tab" data-tab="resources">Recursos</button>
+  <button class="tab" data-tab="history">Historial</button>
+  <button class="tab" data-tab="trash">Papelera</button>
+</nav>
+
+<!-- TAB: BÚSQUEDA SIMBIÓTICA -->
+<section class="panel active" id="tab-search">
+  <div class="cfg-box" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin-bottom:10px;">
+    <label class="toggle-row" style="border:none;padding:0;margin:0;background:transparent;">
+      <span class="toggle-label">⚡ Modo de carga directa (bypass)</span>
+      <div class="switch"><input type="checkbox" id="toggleBypassFetch"><span class="slider"></span></div>
+    </label>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.3;">Evita errores de servidor (403) en repositorios cerrados (ResearchGate, IEEE) dejando que el navegador abra el PDF directamente, sin pasar por el búfer de la extensión.</div>
+  </div>
+  <div class="section-label">🎓 Google Scholar Automatizado</div>
+  <div class="row mb4" style="flex-direction:column; gap:6px;">
+    <label class="toggle-row">
+      <span class="toggle-label">📊 Mayor N° de Citas</span>
+      <div class="switch"><input type="checkbox" id="toggleSortCites"><span class="slider"></span></div>
+    </label>
+    <label class="toggle-row">
+      <span class="toggle-label">📅 Artículos Recientes</span>
+      <div class="switch"><input type="checkbox" id="toggleSortDate"><span class="slider"></span></div>
+    </label>
+    <label class="toggle-row" style="border-color: var(--ok);">
+      <span class="toggle-label" style="color: var(--ok);">🔓 Solo PDF Libre</span>
+      <div class="switch"><input type="checkbox" id="toggleOpenAccess"><span class="slider"></span></div>
+    </label>
+    <label class="toggle-row">
+      <span class="toggle-label">🌐 Solo Web (Sin PDFs)</span>
+      <div class="switch"><input type="checkbox" id="toggleOnlyWeb"><span class="slider"></span></div>
+    </label>
+    <label class="toggle-row">
+      <span class="toggle-label">📚 Solo Libros / Escaneados</span>
+      <div class="switch"><input type="checkbox" id="toggleOnlyBooks"><span class="slider"></span></div>
+    </label>
+  </div>
+
+  <div class="section-label mt8">🔍 Búsqueda Simbiótica & Análisis</div>
+  <div class="row">
+    <input type="text" id="searchInput" placeholder="Concepto para resaltar y resumir…" autocomplete="off">
+    <button class="btn-icon" id="btnSearch" title="Analizar">↵</button>
+  </div>
+
+  <div id="docKeywords" class="chip-list mt8"></div>
+
+  <div class="format-pills mt8" style="flex-wrap: wrap;">
+    <button class="format-pill concept-pill" data-concept="resumen">📌 Resumen</button>
+    <button class="format-pill concept-pill" data-concept="metodologia">🧪 Metodología</button>
+    <button class="format-pill concept-pill" data-concept="resultados">📈 Resultados</button>
+    <button class="format-pill concept-pill" data-concept="futuro">🔮 Trabajo Futuro</button>
+  </div>
+
+  <!-- Interruptor exclusivo PDF ubicado debajo del filtro semántico -->
+  <label class="toggle-row mt8" style="border-color: var(--accent); background: var(--surface2);">
+    <span class="toggle-label" style="color: var(--accent);">⚡ Modo Analizador PDF (Exclusivo)</span>
+    <div class="switch"><input type="checkbox" id="togglePdfMode"><span class="slider"></span></div>
+  </label>
+
+  <div class="counter-bar hidden mt8" id="counterBar">
+    <span id="counterLabel">0 exactos</span>
+    <div class="nav-group">
+      <button class="btn-sm" id="btnPrev" style="padding:4px 8px;">↑</button>
+      <button class="btn-sm" id="btnNext" style="padding:4px 8px;">↓</button>
+    </div>
+    <button class="btn-ghost-red" id="btnClear" style="padding:4px 8px;">✖ Limpiar</button>
+  </div>
+
+  <div class="row mt8" style="justify-content:space-between; align-items:center;">
+    <span class="section-label" id="semHeaderLabel" style="margin:0;">✨ Párrafos clave</span>
+    <button class="btn-export" id="btnTop3ToNotes" style="padding:4px 10px; font-size:11px; background:var(--ok);">📑 Top 3 a Notas</button>
+  </div>
+  
+  <div id="semResults" class="sem-list mt8"></div>
+  <p class="status" id="searchStatus"></p>
+</section>
+
+<!-- TAB: CITAS -->
+<section class="panel" id="tab-cites">
+  <div class="row" style="justify-content:space-between; align-items:center;">
+    <span class="section-label">📚 Bibliografía Guardada</span>
+    <span class="hint" id="citesSubtitle">0 citas</span>
+  </div>
+  <label class="toggle-row mt8" style="padding:8px 14px; background:var(--surface2); border-color:var(--border);">
+    <span class="toggle-label" style="font-size:11.5px; color:var(--accent);">🔤 Orden Alfabético (APA 7): <strong id="alphaLabel">No</strong></span>
+    <div class="switch"><input type="checkbox" id="toggleAlphaSort"><span class="slider"></span></div>
+  </label>
+  <div class="format-pills mt8">
+    <button class="format-pill active" data-fmt="apa">APA 7</button>
+    <button class="format-pill" data-fmt="mla">MLA</button>
+    <button class="format-pill" data-fmt="chicago">Chicago</button>
+    <button class="format-pill" data-fmt="vancouver">Vancouver</button>
+  </div>
+  <div class="row mt8">
+    <input type="text" id="citeExportName" placeholder="Nombre del archivo" class="flex1">
+    <button class="btn-export" id="btnExportCites">⬇ .doc</button>
+    <button class="btn-export" id="btnExportSources" style="background:#345577;">⬇ XML</button>
+  </div>
+  <input type="text" id="citeFilter" placeholder="Filtrar referencias…" class="mt8">
+  <div id="citeList" class="card-list mt8"></div>
+  <p class="status" id="citeStatus"></p>
+</section>
+
+<!-- TAB: NOTAS -->
+<section class="panel" id="tab-notes">
+  <div class="section-label">📝 Nueva Anotación Contextual</div>
+  <textarea id="noteInput" placeholder="Escribe o pega texto de la investigación…"></textarea>
+  <div class="row">
+    <button class="btn-primary flex1" id="btnSaveNote">Guardar Nota</button>
+    <button class="btn-ghost" id="btnClearNote">Limpiar</button>
+  </div>
+  <div class="row mt8" style="justify-content:space-between; align-items:center;">
+    <span class="section-label">📋 Notas en esta URL</span>
+    <button class="btn-export" id="btnExportNotes" style="padding:4px 10px; font-size:11px;">⬇ .doc</button>
+  </div>
+  <input type="text" id="noteFilter" placeholder="Filtrar notas…" class="mb4">
+  <div id="noteList" class="card-list"></div>
+  <p class="status" id="noteStatus"></p>
+</section>
+
+<!-- TAB: RECURSOS -->
+<section class="panel" id="tab-resources">
+  <div class="section-label">🔗 Vincular Recurso Satélite</div>
+  <input type="text" id="resTitle" placeholder="Título del recurso">
+  <input type="url" id="resUrl" placeholder="https://… (opcional)">
+  <textarea id="resDesc" placeholder="Observaciones o relevancia…" style="min-height:50px;"></textarea>
+  <button class="btn-export flex1" id="btnAiRes" style="width:100%;margin-top:4px;">✨ Redactar relevancia con IA</button>
+  <div class="row">
+    <button class="btn-primary flex1" id="btnAddRes">Agregar Recurso</button>
+    <button class="btn-export" id="btnExportRes">⬇ .doc</button>
+  </div>
+  <div class="section-label mt8">📦 Recursos en esta URL</div>
+  <div id="resList" class="card-list"></div>
+  <p class="status" id="resStatus"></p>
+</section>
+
+<!-- TAB: HISTORIAL -->
+<section class="panel" id="tab-history">
+  <div class="row" style="justify-content:space-between; align-items:center;">
+    <span class="section-label" style="margin:0;">🕑 Auditoría Longitudinal Intocable</span>
+    <span class="hint">Registro de actividad</span>
+  </div>
+  <div class="format-pills mt8">
+    <button class="format-pill active" data-hist="all">Todos</button>
+    <button class="format-pill" data-hist="cite">Citas</button>
+    <button class="format-pill" data-hist="note">Notas</button>
+  </div>
+  <input type="text" id="histFilter" placeholder="Filtrar por título o URL…" class="mt8">
+  <div id="histList" class="card-list mt8"></div>
+  <p class="status" id="histStatus"></p>
+</section>
+
+<!-- TAB: PAPELERA -->
+<section class="panel" id="tab-trash">
+  <div class="row" style="justify-content:space-between; align-items:center;">
+    <span class="section-label">🗑 Papelera (Fail-Safe)</span>
+    <button class="btn-danger" id="btnEmptyTrash" style="padding:4px 10px; font-size:11px;">Vaciar</button>
+  </div>
+  <p class="hint">Elementos aislados temporalmente. Puedes restaurarlos o destruirlos.</p>
+  <div id="trashList" class="card-list mt8"></div>
+  <p class="status" id="trashStatus"></p>
+</section>
+
+<!-- SETTINGS OVERLAY -->
+<aside class="overlay hidden" id="settingsOverlay">
+  <div class="settings-card">
+    <div class="settings-hdr">
+      <span>⚙ Preferencias OdysSeek</span>
+      <button class="hdr-btn" id="btnCloseSettings">✕</button>
+    </div>
+    <label class="cfg-row"><span>Tema Interfaz</span>
+      <select id="cfgTheme"><option value="dark">Oscuro Pálido</option><option value="light">Claro Pálido</option></select>
+    </label>
+    <label class="cfg-row"><span>Color Resaltado</span><input type="color" id="cfgHlColor" value="#FDE047"></label>
+    <label class="cfg-row"><span>Color Activo</span><input type="color" id="cfgActiveColor" value="#436B94"></label>
+    <label class="cfg-row"><span>Escala Fuente</span>
+      <select id="cfgFontSize"><option value="12">Pequeña</option><option value="13">Estándar</option><option value="14">Grande</option></select>
+    </label>
+    <div class="section-label mt8">✨ Asistencia con IA (opcional)</div>
+    <label class="cfg-row"><span>Usar IA para redactar</span><input type="checkbox" id="cfgAiEnabled"></label>
+    <label class="cfg-row"><span>Proveedor</span>
+      <select id="cfgAiProvider">
+        <option value="gemini">Google Gemini (clave propia)</option>
+        <option value="deepseek">DeepSeek (de pago)</option>
+      </select>
+    </label>
+    <input type="password" id="cfgAiKey" placeholder="API Key" style="margin-top:6px;">
+    <p style="font-size:10px;color:var(--muted);margin:4px 0 0;" id="cfgAiHint"></p>
+    <p style="font-size:10px;color:var(--muted);margin:4px 0 0;">La IA está desactivada por defecto. Al pulsar «Redactar con IA», se envían al proveedor seleccionado (Google Gemini o DeepSeek) los metadatos de la cita, o el título, la URL y el borrador del recurso, para obtener una respuesta. Tu clave API se envía únicamente al proveedor seleccionado. No se envía el PDF completo. Tu clave queda guardada localmente en el navegador, sin cifrado adicional; utiliza una clave con límites de consumo.</p>
+    <p style="font-size:10px;color:var(--muted);margin:4px 0 0;"><a href="privacidad.html" target="_blank" rel="noopener noreferrer">Ver política de privacidad de OdysSeek</a></p>
+    <button class="btn-primary mt8" id="btnSaveSettings">Guardar Cambios</button>
+    <p class="status" id="settingsStatus"></p>
+  </div>
+</aside>
+
+<script src="pdf.min.js"></script>
+<script src="pdf.worker.min.js"></script>
+<script src="pdf-engine.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

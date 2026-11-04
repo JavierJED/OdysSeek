@@ -1,0 +1,6 @@
+OdysSeek incluye PDF.js (Mozilla Foundation), proyecto de código abierto bajo la licencia Apache, versión 2.0.
+Consulta los encabezados de sus archivos fuente y el texto de licencia adjunto.
+Recursos auxiliares de fuentes, ICC y WASM conservan sus licencias originales en sus respectivas carpetas.
+
+PDF.js: https://github.com/mozilla/pdf.js
+Apache 2.0: https://www.apache.org/licenses/LICENSE-2.0
